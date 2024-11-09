@@ -3,6 +3,8 @@
 #include <string>
 #include <ctime>
 #include "Person.h"
+#include "Lecturer.h"
+#include "Grades.h"
 using namespace std;
 
 class Applicant : public Person
@@ -11,16 +13,9 @@ private:
 	int userID;
 	string faculty;
 	int passedExam = 0;
-	struct Grades {
-		int math;
-		int language;
-		int physics;
-		int history;
-		int geography;
-	};
-	Grades grades;
 	int randNum(int i); 
 public: 
+	Grades<double> grades; // Пункт 5
 	string dateOfRegistration;
 	string currentStatus;
 	int quota;
@@ -32,16 +27,19 @@ public:
 	Applicant(int id, string fName, string lName, string fac);
 	Applicant();
 	Applicant(const Applicant& applicant);
-
 	~Applicant() override;
-
+	string operator[](size_t index);
+	Applicant& operator--();
+	Applicant& operator++();
+	Applicant& operator*(Lecturer& lecturer);
+	Applicant operator+(Applicant& applicant);
+	Applicant& operator-(Applicant& applicant);
 	void doWork() override;
-	void eleminateApplicant(); // 3 пункт
+	void eleminateApplicant(); 
 	using Person::displayInfo;
 	void printUser();
 	void printUser(Applicant applicant);
 	void passExams();
-	float sumAverageGrade(int math, int physics, int language, int history, int geography);
 	Applicant reviewGrades(Applicant& applicants);
 	// get set
 
@@ -49,7 +47,7 @@ public:
 	string getFirstName();
 	string getLastName();
 	string getFaculty();
-	int getAge();
+	int getAge() override;
 	string getDateOfRegistration();
 	string getCurrentStatus();
 	int getQuota();
@@ -73,20 +71,19 @@ public:
 	void setDateOfRegistration(string date);
 	void setCurrentStatus(string status);
 	void setQuota(int quota);
-	void setAverageGrade(float grade);
 	void setPassedExam(int status);
 
-	int getMathGrade();
-	int getLanguageGrade();
-	int getPhysicsGrade();
-	int getHistoryGrade();
-	int getGeographyGrade();
-	float getAverageGrade();
+	void setMath(double grade);
+	void setLanguage(double grade);
+	void setPhysics(double grade);
+	void setHistory(double grade);
+	void setGeography(double grade);
 
-	void setMathGrade(int grade);
-	void setLanguageGrade(int grade);
-	void setPhysicsGrade(int grade);
-	void setHistoryGrade(int grade);
-	void setGeographyGrade(int grade);
+	double getMath();
+	double getLanguage();
+	double getPhysics();
+	double getHistory();
+	double getGeography();
+	double getAverage();
 };
 

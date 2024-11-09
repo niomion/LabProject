@@ -21,12 +21,15 @@ private:
 
 public:
     virtual void doWork() = 0;
+    virtual int getAge() = 0;
     Person(string first, string middle, string last, string gen, int age,
         string dob, string nation, string addr);
     Person(string first, string middle, string last, string gen, int age);
     Person();
+    Person operator--();
+    Person operator++();
     virtual ~Person();
     void killPerson();
-    int getAge();
+    void ressurectPerson();
     void displayInfo();
 };

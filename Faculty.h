@@ -6,13 +6,37 @@
 #include <string>
 #include <vector>
 
+template <typename T>
 class Faculty
 {
-protected:
-	string facultyName;
+private:
+	vector<T> students;
 public:
-	vector<Student> students;
-	vector<Lecturer> lecturers;
-	vector<Aspirant> aspirants;
+	Faculty();
+	~Faculty();
+	void registerStudents(T& person);
+	void printAll();
 };
+
+	template<typename T>
+	Faculty<T>::~Faculty() {
+		cout << "Faculty has been destroyed" << endl;
+	}
+
+	template<typename T>
+	Faculty<T>::Faculty() {
+		cout << "Faculty has been created" << endl;
+	}
+
+	template<typename T>
+	void Faculty<T>::registerStudents(T& person) {
+		students.push_back(person);
+	}
+	template<typename T>
+	void Faculty<T>::printAll() {
+		for (auto& someone : students) {
+			someone.displayInfo();
+		}
+	}
+
 

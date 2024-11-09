@@ -313,7 +313,7 @@ int HumanFactory::openMenu() {
 string HumanFactory::fNames[15] = {
 	"John", "Emily", "Michael", "Sophia", "James",
 	"Olivia", "David", "Emma", "Daniel", "Isabella",
-	"Matthew", "Mia", "Joshua", "Charlotte", "Benjamin"
+	"Matthew", "Mia", "Joshua", "Charlotte", "Kazihura"
 };
 
 string HumanFactory::lNames[15] = {
@@ -404,6 +404,19 @@ Applicant HumanFactory::produceHumanStat() {
 	string nationality = nationalities[rand() % 3];
 	string address = addresses[rand() % 5];
 	return Applicant(firstName, middleName, lastName, gender, age, dob, nationality, address, faculty);
+}
+
+Student HumanFactory::produceStudent() {
+	string firstName = fNames[rand() % 15];
+	string middleName = mNames[rand() % 15];
+	string lastName = lNames[rand() % 15];
+	string faculty = faculties[rand() % 15];
+	string gender = genders[rand() % 2];
+	int age = 18 + rand() % 10;
+	string dob = "01/01/2000";
+	string nationality = nationalities[rand() % 3];
+	string address = addresses[rand() % 5];
+	return Student(firstName, middleName, lastName, gender, age, dob, nationality, address, "123123", faculty, 1, 75);
 }
 
 Lecturer HumanFactory::produceLecturer() {

@@ -13,5 +13,6 @@ public:
 	Lecturer();
 	void doWork() override;
 	~Lecturer() override;
+	int getAge() override;
 };
 

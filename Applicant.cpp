@@ -6,6 +6,71 @@
 #include <cstdlib>
 #include <ctime>
 
+string Applicant::operator[](size_t index) {
+	switch (index) {
+	case 0:
+		return this->getFirstName();
+	case 1:
+		return this->getMiddleName();
+	case 2:
+		return this->getLastName();
+	case 3:
+		return this->getFaculty();
+	case 4:
+		return to_string(this->getAge());
+	case 5:
+		return this->getGender();
+	default:
+		return ""; 
+	}
+}
+
+Applicant& Applicant::operator--() {
+	this->killPerson();
+	return *this;
+}
+
+Applicant& Applicant::operator++() {
+	this->ressurectPerson();
+	return *this;
+}
+
+Applicant& Applicant::operator*(Lecturer& lecturer) {
+	lecturer.doWork();
+	this->passExams();
+	return *this;
+}
+
+Applicant& Applicant::operator-(Applicant& someone) {
+	if (rand() & 1) {
+		--someone;
+		cout << this->getFirstName() << " is winner!" << endl;
+		return *this;
+	}
+	else {
+		this->killPerson();
+		cout << someone.getFirstName() << " is winner!" << endl;
+		return someone;
+	}
+}
+
+Applicant Applicant::operator+(Applicant& victim) {
+	string fName = victim.getFirstName();
+	string lName = this->getLastName();
+	int age = (this->getAge() + victim.getAge());
+	string dob = this->getDOB();
+	string fac = (rand() % 2 == 0 ? this->getFaculty() : victim.getFaculty());
+	string mName = (rand() % 2 == 0 ? this->getMiddleName() : victim.getMiddleName());
+	string gender = (this->getGender() == victim.getGender() ? this->getGender() : "Unknown");
+	string nat = (this->getNationality() == victim.getNationality() ? this->getNationality() : "Unknown");
+	string add = (rand() % 2 == 0 ? this->getAdress() : victim.getAdress());
+	this->killPerson();
+	--victim;
+	cout << "Amalgamation complete..." << endl;
+	Applicant sample(fName, mName, lName, gender, age, dob, nat, add, fac);
+	return sample;
+}
+
 Applicant::Applicant(string firstName, string middleName, string lastName, string gender,
 	int age, string dob, string nationality, string address, string faculty)
 	: Person(firstName, middleName, lastName, gender, age, dob, nationality, address),
@@ -36,17 +101,13 @@ Applicant::~Applicant() {
 }
 
 void Applicant::passExams() {
-	this->setMathGrade(35 + rand() % 66);
-	this->setGeographyGrade(35 + rand() % 66);
-	this->setHistoryGrade(35 + rand() % 66);
-	this->setPhysicsGrade(35 + rand() % 66);
-	this->setLanguageGrade(35 + rand() % 66);
-	this->setAverageGrade(sumAverageGrade(this->getMathGrade(), this->getPhysicsGrade(), this->getLanguageGrade(), this->getHistoryGrade(), this->getGeographyGrade()));
-	this->setCurrentStatus("Wroted the exams. Last update : " + getTime());
-}
-
-float Applicant::sumAverageGrade(int math, int physics, int language, int history, int geography) {
-	return ((math + physics + language + history + geography) / 5.0);
+	this->setMath(35 + rand() % 66);
+	this->setGeography(35 + rand() % 66);
+	this->setHistory(35 + rand() % 66);
+	this->setPhysics(35 + rand() % 66);
+	this->setLanguage(35 + rand() % 66);
+	this->grades.calculateAverageGrade();
+	setCurrentStatus("Wroted the exams. Last update : " + getTime());
 }
 
 int Applicant::randNum(int i) {
@@ -90,12 +151,12 @@ void Applicant::printUser(Applicant applicant) {
 }
 
 Applicant Applicant::reviewGrades(Applicant& applicants) {
-	this->setMathGrade(65 + rand() % 36);
-	this->setGeographyGrade(65 + rand() % 36);
-	this->setHistoryGrade(65 + rand() % 36);
-	this->setPhysicsGrade(65 + rand() % 36);
-	this->setLanguageGrade(65 + rand() % 36);
-	this->setAverageGrade(sumAverageGrade(this->getMathGrade(), this->getPhysicsGrade(), this->getLanguageGrade(), this->getHistoryGrade(), this->getGeographyGrade()));
+	this->setMath(65 + rand() % 36);
+	this->setGeography(65 + rand() % 36);
+	this->setHistory(65 + rand() % 36);
+	this->setPhysics(65 + rand() % 36);
+	this->setLanguage(65 + rand() % 36);
+	this->grades.calculateAverageGrade();
 	this->setCurrentStatus("Reviewed the exams. Last update : " + getTime());
 	return applicants;
 }
@@ -106,7 +167,6 @@ string Applicant::getLastName() { return lastName; }
 string Applicant::getFaculty() { return faculty; }
 string Applicant::getDateOfRegistration() { return dateOfRegistration; }
 string Applicant::getCurrentStatus() { return currentStatus; }
-float Applicant::getAverageGrade() { return averageGrade; }
 int Applicant::getQuota() { return quota; }
 int Applicant::getPassedExam() { return passedExam; }
 string Applicant::getGender() { return gender; }
@@ -128,18 +188,18 @@ void Applicant::setFaculty(string faculty) { this->faculty = faculty; }
 void Applicant::setDateOfRegistration(string date) { dateOfRegistration = date; }
 void Applicant::setCurrentStatus(string status) { currentStatus = status; }
 void Applicant::setQuota(int quota) { this->quota = quota; }
-void Applicant::setAverageGrade(float grade) { this->averageGrade = grade; }
 void Applicant::setPassedExam(int status) { this->passedExam = status; }
 void Applicant::setAge(int age) { this->age = age; }
 
-int Applicant::getMathGrade() { return grades.math; }
-int Applicant::getLanguageGrade()  { return grades.language; }
-int Applicant::getPhysicsGrade()  { return grades.physics; }
-int Applicant::getHistoryGrade()  { return grades.history; }
-int Applicant::getGeographyGrade()  { return grades.geography; }
+void Applicant::setMath(double grade) { grades.setMathGrade(grade); }
+void Applicant::setLanguage(double grade) { grades.setLanguageGrade(grade); }
+void Applicant::setPhysics(double grade) { grades.setPhysicsGrade(grade); }
+void Applicant::setHistory(double grade) { grades.setHistoryGrade(grade); }
+void Applicant::setGeography(double grade) { grades.setGeographyGrade(grade); }
 
-void Applicant::setMathGrade(int grade) { grades.math = grade; }
-void Applicant::setLanguageGrade(int grade) { grades.language = grade; }
-void Applicant::setPhysicsGrade(int grade) { grades.physics = grade; }
-void Applicant::setHistoryGrade(int grade) { grades.history = grade; }
-void Applicant::setGeographyGrade(int grade) { grades.geography = grade; }
+double Applicant::getMath() { return grades.getMathGrade(); }
+double Applicant::getLanguage() { return grades.getLanguageGrade(); }
+double Applicant::getPhysics() { return grades.getPhysicsGrade(); }
+double Applicant::getHistory() { return grades.getHistoryGrade(); }
+double Applicant::getGeography() { return grades.getGeographyGrade(); }
+double Applicant::getAverage() { return grades.getAverageGrade(); }

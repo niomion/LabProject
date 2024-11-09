@@ -4,6 +4,7 @@
 #include <fstream> 
 #include "Applicant.h"
 #include "Lecturer.h"
+#include "Student.h"
 
 using namespace std;
 
@@ -27,6 +28,7 @@ public:
     static Applicant* Service_Static(Applicant array[], int size, string mode);
     static void Service_Dynamic(Applicant** array, int size, string mode);
     static void Service_InDynArr(Applicant** array, Applicant* put, int size, int element);
+    static Student produceStudent();
 
     static int Service_Menu(Applicant& applicant);
     static void Service_Write(Applicant& applicant);

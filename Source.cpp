@@ -14,10 +14,10 @@ using namespace std;
 
 int main() {
     srand(time(NULL));
-   /*Admissions::prepareAdmission();
-    University university("Standart University", 15, 5);
-    Lecturer lecturer = HumanFactory::produceLecturer();
-    university.admission.setExaminationController(lecturer);
+   Admissions::prepareAdmission();
+   University university("Standart University", 15, 5);
+   Lecturer lecturer = HumanFactory::produceLecturer();
+    /* university.admission.setExaminationController(lecturer);
     for (int i = 0; i < 10; i++) {
         Applicant applicant = HumanFactory::produceHumanStat();
         university.admission.registerApplicant(applicant, (rand() % 2));
@@ -31,42 +31,39 @@ int main() {
     university.admission.fillStudents();
     university.admission.listApplicants(university.admission.students);*/
 
-    // Lab 5
-     auto dummy = nullptr;
-    Applicant** applicantdynamic = HumanFactory::Service_DynamicArr(5);
-    Applicant *testman = HumanFactory::produceHumanDyn();
-    Applicant* testman2 = HumanFactory::produceHumanDyn();
-     HumanFactory::Service_InDynArr(dummy, testman, 5, 5);
-     HumanFactory::Service_InDynArr(applicantdynamic, testman, 5, 5);
-    HumanFactory::Service_InDynArr(applicantdynamic, testman, 5, 0);
-    HumanFactory::Service_InDynArr(applicantdynamic, testman2, 5, 1);
-    HumanFactory::Service_Dynamic(applicantdynamic, 5, "print");
-    HumanFactory::Service_Dynamic(applicantdynamic, 5, "female");
-    HumanFactory::Service_Dynamic(applicantdynamic, 5, "male");
-    HumanFactory::Service_Dynamic(applicantdynamic, 5, "print");
-    Applicant applicantstatic[5]; 
-    applicantstatic[0] = HumanFactory::produceHumanStat();
-    applicantstatic[1] = HumanFactory::produceHumanStat();
-    HumanFactory::Service_Static(applicantstatic, 5, "print");
-    HumanFactory::Service_Static(applicantstatic, 5, "female");
-    HumanFactory::Service_Static(applicantstatic, 5, "male");
-    HumanFactory::Service_Static(applicantstatic, 5, "print");
+    /* Lab 6 */
+    university.admission++; // Пункт 1
+    university.admission--;
+    university.admission--; 
 
-    Person *person = nullptr;
-    Applicant applicanttest = HumanFactory::produceHumanStat();
-    Lecturer lecturertest = HumanFactory::produceLecturer();
-    lecturertest.doWork(); // раннього
-    person = &applicanttest; 
-    person->doWork(); // пізнього
-    person = &lecturertest;
-    person->doWork();
-    HumanFactory::openMenu();
+    Applicant testMan = HumanFactory::produceHumanStat();
+    Applicant testMan2 = HumanFactory::produceHumanStat();
+    vector<Applicant> test = {HumanFactory::produceHumanStat(), HumanFactory::produceHumanStat(), HumanFactory::produceHumanStat()};
+    ++testMan; --testMan; --testMan; ++testMan;
 
-    Applicant Someone = HumanFactory::produceHumanStat();
-    Applicant Someone2;
-    HumanFactory::Service_Print(Someone);
-    HumanFactory::Service_Write(Someone);
-    HumanFactory::Service_Read(Someone2);
-    HumanFactory::Service_Print(Someone2);
+    testMan.displayInfo(); // Пункт 2
+    testMan2.displayInfo();
+    Applicant abomination = testMan + testMan2;
+    abomination.displayInfo();
+    Applicant winner = ++testMan - abomination; 
+
+    university.admission += abomination; // Пункт 3
+    university.admission = abomination;
+    university.admission -= abomination;
+    university.admission = abomination;
+    university.admission -= abomination;
+    university.admission.listApplicants();
+    university.admission *= test;
+    university.admission.listApplicants();
+    abomination = abomination * lecturer;
+    cout << abomination[0] << endl;
+    
+    testMan.displayInfo(); testMan2.displayInfo(); // Пункт 4
+    cout << (university.admission.maxAge(testMan, testMan2)).getAge() << endl;
+
+    Student someone = HumanFactory::produceStudent(); // Пункт 6
+    university.faculties.registerStudents(someone);
+    university.faculties.printAll();
+
     return 0;
 }

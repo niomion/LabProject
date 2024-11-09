@@ -4,7 +4,7 @@
 #include "Applicant.h"
 #include <vector>
 #include "Lecturer.h"
-
+#include "HumanFactory.h"
 using namespace std;
 
 class Admissions
@@ -14,7 +14,7 @@ private:
 	static int totalApplications;
 	const int quotaFirst;
 	const int quotaSecond;
-	string faculties[15] = {
+	vector<string> faculties = {
    "ComputerScience", "Physics", "Mathematics", "Biology", "Chemistry",
    "Engineering", "Law", "Medicine", "Economics", "Psychology",
    "Philosophy", "History", "Art", "Linguistics", "Sociology"
@@ -35,6 +35,16 @@ public:
 	Admissions();
 
 	~Admissions();
+	template<typename T>
+	auto maxAge(T& x, T& y) {
+		return (x.getAge() > y.getAge()) ? x : y;
+	}
+	Admissions& operator*=(vector<Applicant>& list);
+	Admissions& operator+=(Applicant& applicant);
+	Admissions& operator-=(Applicant& applicant);
+	Admissions& operator=(Applicant& applicant);
+	Admissions& operator--(int);
+	Admissions& operator++(int);
 
 	void setExaminationController(Lecturer& lecturer);
 	void passedExam(Lecturer controller, vector<Applicant> applicants, vector<Applicant> applicantsOnline);

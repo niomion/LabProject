@@ -23,17 +23,28 @@ Person::~Person() {
 }
 
 void Person::killPerson() {
-    cout << "This " << this->firstName << " " << this->lastName << " is dead now..." << endl;
-    dead = true; 
+    if (!this->dead) {
+        cout << "This " << this->firstName << " " << this->lastName << " is dead now..." << endl;
+        dead = true;
+    }
+    else {
+        cout << "This " << this->firstName << " " << this->lastName << " is already dead!" << endl;
+    }
 }
 
-int Person::getAge() {
-    return age;
+void Person::ressurectPerson() {
+    if (this->dead) {
+        cout << "This " << this->firstName << " " << this->lastName << " is alive now!" << endl;
+        dead = false;
+    }
+    else {
+        cout << "This " << this->firstName << " " << this->lastName << " is already alive!" << endl;
+    }
 }
 
 
 void Person::displayInfo() {
-    cout << "Name: " << this->firstName << ", Age: " << this->age
+    cout << "First name: " << this->firstName << ", Middle name: " << this->middleName << ", Last name: " << this->lastName << ", Age: " << this->age
         << ", Gender: " << this->gender << ", Nationality: " << this->nationality
         << endl; 
 }

@@ -29,6 +29,71 @@ void Admissions::setExaminationController(Lecturer& lecturer) {
     ExaminationController = lecturer; 
 }
 
+Admissions& Admissions::operator*=(vector<Applicant>& list) {
+    for (auto& applicant : list) {
+        applicants.push_back(applicant);
+        cout << "Applicant " << applicant.getFirstName() << " " << applicant.getLastName()
+            << " has been registered." << endl;
+    }
+    return *this;
+}
+
+Admissions& Admissions::operator=(Applicant& applicant) {
+    int tid = applicant.getUserID();
+    for (auto& applicant : applicants) {
+        if (applicant.getUserID() == tid) {
+            cout << "Applicant " << applicant.getFirstName() << " " << applicant.getLastName()
+                << " has been found in the list." << endl;
+            return *this;
+        }
+    }
+    cout << "Applicant was not found in the list" << endl;
+    return *this;
+}
+
+Admissions& Admissions::operator-=(Applicant& applicant) {
+    int tid = applicant.getUserID();
+    for (int i = 0; i < applicants.size(); i++) {
+        if (applicant.getUserID() == tid) {
+            cout << "Applicant " << applicant.getFirstName() << " " << applicant.getLastName()
+                << " has been deleted from the list." << endl;
+            applicants.erase(applicants.begin() + i);
+            return *this;
+        }
+    }
+    cout << "Applicant was not found in the list" << endl;
+    return *this;
+}
+
+Admissions& Admissions::operator+=(Applicant& applicant) {
+    applicants.push_back(applicant);
+    cout << "Applicant " << applicant.getFirstName() << " " << applicant.getLastName()
+        << " has been registered." << endl;
+    return *this;
+}
+
+Admissions& Admissions::operator--(int) {
+    if (!applicants.empty()) {
+        Applicant temp = applicants.back();
+        applicants.pop_back();
+        cout << "Applicant " << temp.getFirstName() << " " << temp.getLastName()
+            << " has been deleted from the list." << endl;
+    }
+    else {
+        cout << "List of applicants is empty" << endl;
+    }
+
+    return *this;
+}
+
+Admissions& Admissions::operator++(int) {
+    Applicant temp = HumanFactory::produceHumanStat();
+    applicants.push_back(temp);
+    cout << "Applicant " << temp.getFirstName() << " " << temp.getLastName()
+        << " has been registered." << endl;
+    return *this;
+}
+
 void Admissions::prepareAdmission() {
     ifstream file("Applicants.dat");
     if (file.is_open()) {
@@ -63,12 +128,18 @@ void Admissions::registerApplicant(Applicant& applicant) {
 }
 
 void Admissions::listApplicants() {
-    for (auto& applicant : applicants) {
-        applicant.printUser();
+    if (!applicants.empty()) {
+        for (auto& applicant : applicants) {
+            applicant.printUser();
+        }
     }
-    for (auto& applicant : applicantsOnline) {
-        applicant.printUser();
+    else {
+        cout << "List is empty!" << endl;
     }
+
+        for (auto& applicant : applicantsOnline) {
+            applicant.printUser();
+        }
 }
 
 void Admissions::listApplicants(vector<Applicant> students) {
@@ -97,7 +168,7 @@ void Admissions::applicantExams() {
 
 void Admissions::passedExam(Lecturer controller, vector<Applicant> applicants, vector<Applicant> applicantsOnline) {
     for (auto& applicant : applicants) {
-        if (applicant.getAverageGrade() >= 55) {
+        if (applicant.getAverage() >= 55) {
             applicant.setPassedExam(1);
             applicant.setCurrentStatus("Passed exams. Last update : " + applicant.getTime());
         }
@@ -107,7 +178,7 @@ void Admissions::passedExam(Lecturer controller, vector<Applicant> applicants, v
         }
     }
     for (auto& applicant : applicantsOnline) {
-        if (applicant.getAverageGrade() >= 55) {
+        if (applicant.getAverage() >= 55) {
             applicant.setPassedExam(1);
             applicant.setCurrentStatus("Passed exams. Last update : " + applicant.getTime());
         }
@@ -148,14 +219,14 @@ void Admissions::writeToFile(int TotalApplications, int TotalID) {
 }
 
 string Admissions::getFaculty(int i) {
-    if (i > 0 && i <= faculties->size()) {
+    if (i > 0 && i <= faculties.size()) {
         return faculties[i - 1];  
     }
     return "Invalid faculty index";
 }
 
 void Admissions::fillStudents() {
-    for (int i = 0; i < (faculties->size()-1); i++) {
+    for (int i = 0; i < (faculties.size()-1); i++) {
         for (int j = 0; j < 2; j++) {
             string filename = "ApplicantsList/" + getFaculty(i + 1) + to_string(j) + ".dat";
             ifstream file(filename);
