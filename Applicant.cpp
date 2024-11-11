@@ -162,7 +162,7 @@ Applicant Applicant::reviewGrades(Applicant& applicants) {
 }
 
 int Applicant::getUserID() { return userID; }
-string Applicant::getFirstName() { return firstName; }
+string Applicant::getFirstName() const { return firstName; }
 string Applicant::getLastName() { return lastName; }
 string Applicant::getFaculty() { return faculty; }
 string Applicant::getDateOfRegistration() { return dateOfRegistration; }

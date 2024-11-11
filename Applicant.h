@@ -44,7 +44,7 @@ public:
 	// get set
 
 	int getUserID();
-	string getFirstName();
+	string getFirstName() const;
 	string getLastName();
 	string getFaculty();
 	int getAge() override;

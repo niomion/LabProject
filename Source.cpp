@@ -1,69 +1,64 @@
 #include <iostream>
 #include <string>
 #include "Applicant.h"
-#include "Admissions.h"
 #include "HumanFactory.h"
-#include "University.h"
 #include <cstdlib>
 #include <ctime>
-#include <vector>
+#include <algorithm>
+#include <map>
 #include "Person.h"
-#include "Lecturer.h"
+#include "Functor.h"
 
 using namespace std;
 
+void printMap(multimap<int, Applicant>& map, int i) {
+    cout << "Map " << i << endl;
+    for (auto it = map.begin(); it != map.end(); it++) {
+        cout << it->first << " -> " << it->second.getFirstName() << endl;
+    }
+    cout << "----------" << endl;
+}
+
+bool argument(const pair<const int, Applicant>& mapElement) {
+    return mapElement.second.getFirstName() == "James";
+}
+
+void change(pair<const int, Applicant>& mapElement) {
+    mapElement.second.setFirstName("Changed");  
+}
+
 int main() {
     srand(time(NULL));
-   Admissions::prepareAdmission();
-   University university("Standart University", 15, 5);
-   Lecturer lecturer = HumanFactory::produceLecturer();
-    /* university.admission.setExaminationController(lecturer);
-    for (int i = 0; i < 10; i++) {
-        Applicant applicant = HumanFactory::produceHumanStat();
-        university.admission.registerApplicant(applicant, (rand() % 2));
-    } 
+    /* Lab 7 */
+    multimap<int, Applicant> map;
+    multimap<int, Applicant> map2;
+    for (int i = 0; i < 5; i++) {
+        map.insert({ i, HumanFactory::produceHumanStat() });
+        map2.insert({ i, HumanFactory::produceHumanStat() });
+    }
+    cout << "Is multimap empty: " << map.empty() << endl;
+    map.insert({ 1, HumanFactory::produceHumanStat() });
+    printMap(map, 1); printMap(map2, 2);
+    map.erase(4);
+    map.swap(map2);
+    printMap(map, 1); printMap(map2, 2);
+
+    auto it = map.find(1);
+    if (it != map.end()) {
+        cout << it->first << " => " << it->second.getFirstName() << endl;
+    }
     
-    university.admission.listApplicants();
-    university.admission.applicantExams();
-    university.admission.appealGrades(university.admission.applicants);
-    university.admission.enrollment();
-    university.admission.listApplicants();
-    university.admission.fillStudents();
-    university.admission.listApplicants(university.admission.students);*/
+    int count = count_if(map.begin(), map.end(), argument);
+    cout << "Elements with name 'James': " << count << endl;
+    for_each(map.begin(), map.end(), change);
+    printMap(map, 1);
 
-    /* Lab 6 */
-    university.admission++; // Пункт 1
-    university.admission--;
-    university.admission--; 
-
-    Applicant testMan = HumanFactory::produceHumanStat();
-    Applicant testMan2 = HumanFactory::produceHumanStat();
-    vector<Applicant> test = {HumanFactory::produceHumanStat(), HumanFactory::produceHumanStat(), HumanFactory::produceHumanStat()};
-    ++testMan; --testMan; --testMan; ++testMan;
-
-    testMan.displayInfo(); // Пункт 2
-    testMan2.displayInfo();
-    Applicant abomination = testMan + testMan2;
-    abomination.displayInfo();
-    Applicant winner = ++testMan - abomination; 
-
-    university.admission += abomination; // Пункт 3
-    university.admission = abomination;
-    university.admission -= abomination;
-    university.admission = abomination;
-    university.admission -= abomination;
-    university.admission.listApplicants();
-    university.admission *= test;
-    university.admission.listApplicants();
-    abomination = abomination * lecturer;
-    cout << abomination[0] << endl;
+    // 
     
-    testMan.displayInfo(); testMan2.displayInfo(); // Пункт 4
-    cout << (university.admission.maxAge(testMan, testMan2)).getAge() << endl;
-
-    Student someone = HumanFactory::produceStudent(); // Пункт 6
-    university.faculties.registerStudents(someone);
-    university.faculties.printAll();
-
+    Functor<int> func;
+    cout << func(10, '+', 5) << endl;
+    cout << func(10, '/', 0) << endl;
+    cout << func(10, "<", 15) << endl; cout << func(10, "!=", 15) << endl; cout << func(10, "==", 10) << endl;
+    cout << func.boolean.logical_and(true, true) << endl;  cout << func.boolean.logical_or(false, false) << endl;
     return 0;
 }

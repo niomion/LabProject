@@ -131,6 +131,7 @@
     <ClCompile Include="Applicant.cpp" />
     <ClCompile Include="Aspirant.cpp" />
     <ClCompile Include="Faculty.cpp" />
+    <ClCompile Include="Functor.cpp" />
     <ClCompile Include="HumanFactory.cpp" />
     <ClCompile Include="Lecturer.cpp" />
     <ClCompile Include="Person.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Applicant.h" />
     <ClInclude Include="Aspirant.h" />
     <ClInclude Include="Faculty.h" />
+    <ClInclude Include="Functor.h" />
     <ClInclude Include="Grades.h" />
     <ClInclude Include="HumanFactory.h" />
     <ClInclude Include="Lecturer.h" />
